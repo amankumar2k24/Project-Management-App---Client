@@ -60,6 +60,12 @@ export interface Task {
   comments?: Comment[];
 }
 
+export interface SearchResult {
+  tasks?: Task[];
+  projects?: Project[];
+  users?: User[];
+}
+
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
   reducerPath: "api",
@@ -95,11 +101,11 @@ export const api = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
-    
+
     updateTaskStatus: builder.mutation<
       Task,
       { taskId: number; status: string }
-    >({  
+    >({
       query: ({ taskId, status }) => ({
         url: `task/${taskId}/status`,
         method: "PATCH",
@@ -109,6 +115,10 @@ export const api = createApi({
         { type: "Tasks", id: taskId },
       ],
     }),
+
+    search : builder.query<SearchResult[], string >({
+      query:(query)=> `search?query=${query}`
+    })
   }),
 });
 
@@ -118,4 +128,5 @@ export const {
   useGetTasksQuery,
   useCreateTaskMutation,
   useUpdateTaskStatusMutation,
+  useSearchQuery
 } = api;
