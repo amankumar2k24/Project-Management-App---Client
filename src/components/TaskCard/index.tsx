@@ -48,11 +48,11 @@ const TaskCard = ({ task }: Props) => {
       </p>
       <p>
         <strong>Start Date:</strong>{" "}
-        {task.startDate ? format(new Date(task.startDate), "P") : "Not set"}
+        {task.startDate ? format(new Date(task.startDate), "dd/MM/yyyy hh:mm a") : "Not set"}
       </p>
       <p>
         <strong>Due Date:</strong>{" "}
-        {task.dueDate ? format(new Date(task.dueDate), "P") : "Not set"}
+        {task.dueDate ? format(new Date(task.dueDate), "dd/MM/yyyy hh:mm a") : "Not set"}
       </p>
       <p>
         <strong>Author:</strong>{" "}

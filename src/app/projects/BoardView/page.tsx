@@ -15,11 +15,7 @@ type BoardProps = {
 const taskStatus = ["To Do", "Work In Progress", "Under Review", "Completed"];
 
 const BoardView = ({ id, setIsModalNewTaskOpen }: BoardProps) => {
-  const {
-    data: tasks,
-    isLoading,
-    error,
-  } = useGetTasksQuery({ projectId: Number(id) });
+  const { data: tasks, isLoading, error, } = useGetTasksQuery({ projectId: Number(id) });
 
   const [updateTaskStatus] = useUpdateTaskStatusMutation();
 
@@ -138,12 +134,9 @@ const Task = ({ task }: TaskProps) => {
 
   const taskTagsSplit = task.tags ? task.tags.split(",") : [];
 
-  const formattedStartDate = task.startDate
-    ? format(new Date(task.startDate), "P")
-    : "";
-  const formattedDueDate = task.dueDate
-    ? format(new Date(task.dueDate), "P")
-    : "";
+  
+  const formattedStartDate = task.startDate ? format(new Date(task.startDate), "P") : "";
+  const formattedDueDate = task.dueDate ? format(new Date(task.dueDate), "P") : "";
 
   const numberOfComments = (task.comments && task.comments?.length) || 0;
 

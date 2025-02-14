@@ -66,11 +66,19 @@ export interface SearchResult {
   users?: User[];
 }
 
+export interface Team {
+  teamId: number;
+  teamName: string;
+  productOwnerUserId?: number;
+  productManagerUserId?: number;
+}
+
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
   reducerPath: "api",
-  tagTypes: ["Projects", "Tasks"],
+  tagTypes: ["Projects", "Tasks", "Users", "Teams"],
   endpoints: (builder) => ({
+
     getProjects: builder.query<Project[], void>({
       query: () => "project",
       providesTags: ["Projects"],
@@ -92,7 +100,13 @@ export const api = createApi({
           ? result.map(({ id }) => ({ type: "Tasks" as const, id }))
           : [{ type: "Tasks" as const }],
     }),
-
+    getTasksByUser: builder.query<Task[], number>({
+      query: (userId) => `task/user/${userId}`,
+      providesTags: (result, error, userId) =>
+        result
+          ? result.map(({ id }) => ({ type: "Tasks", id }))
+          : [{ type: "Tasks", id: userId }],
+    }),
     createTask: builder.mutation<Task, Partial<Task>>({
       query: (task) => ({
         url: "task",
@@ -115,9 +129,16 @@ export const api = createApi({
         { type: "Tasks", id: taskId },
       ],
     }),
-
-    search : builder.query<SearchResult[], string >({
-      query:(query)=> `search?query=${query}`
+    getUsers: builder.query<User[], void>({
+      query: () => "user",
+      providesTags: ["Users"]
+    }),
+    getTeams: builder.query<Team[], void>({
+      query: () => "team",
+      providesTags: ["Teams"]
+    }),
+    search: builder.query<SearchResult[], string>({
+      query: (query) => `search?query=${query}`
     })
   }),
 });
@@ -126,7 +147,10 @@ export const {
   useGetProjectsQuery,
   useCreateProjectMutation,
   useGetTasksQuery,
+  useGetTasksByUserQuery,
   useCreateTaskMutation,
   useUpdateTaskStatusMutation,
-  useSearchQuery
+  useSearchQuery,
+  useGetUsersQuery,
+  useGetTeamsQuery
 } = api;

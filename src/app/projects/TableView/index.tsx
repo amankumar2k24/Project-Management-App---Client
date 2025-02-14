@@ -4,6 +4,7 @@ import { dataGridClassNames, dataGridSxStyles } from "@/lib/utils";
 import { useGetTasksQuery } from "@/state/api";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React from "react";
+import  {format} from "date-fns"
 
 type Props = {
   id: string;
@@ -45,11 +46,13 @@ const columns: GridColDef[] = [
     field: "startDate",
     headerName: "Start Date",
     width: 130,
+    renderCell: (params) => format(new Date(params.value), "dd/MM/yyyy hh:mm a") || "Unknown",
   },
   {
     field: "dueDate",
     headerName: "Due Date",
     width: 130,
+    renderCell: (params) =>  format(new Date(params.value), "dd/MM/yyyy hh:mm a")  || "Unknown",
   },
   {
     field: "author",

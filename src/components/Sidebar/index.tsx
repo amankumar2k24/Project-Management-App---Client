@@ -12,6 +12,7 @@ const Sidebar = () => {
   const [showPriority, setShowPriority] = useState(true);
 
   const { data: projects } = useGetProjectsQuery();
+  console.log("projects=>", projects);
 
   const dispatch = useAppDispatch();
   const isSidebarCollapsed = useAppSelector(
@@ -24,7 +25,7 @@ const Sidebar = () => {
 
   return (
     <div className={sidebarClassNames}>
-      <div className="flex h-[100%] w-full flex-col justify-start">
+      <div className="flex h-[100%] w-full flex-col justify-start overflow-x-hidden">
         {/* TOP LOGO */}
         <div className="z-50 flex min-h-[56px] w-64 items-center justify-between bg-white px-6 pt-3 dark:bg-black">
           <div className="text-xl font-bold text-gray-800 dark:text-white">
@@ -56,7 +57,7 @@ const Sidebar = () => {
         </div>
         {/* NAVBAR LINKS  */}
         <nav className="z-10 w-full">
-          <SidebarLink icon={Home} label="Home" href="" />
+          <SidebarLink icon={Home} label="Home" href="/home" />
           <SidebarLink icon={Briefcase} label="Timeline" href="/timeline" />
           <SidebarLink icon={Search} label="Search" href="/search" />
           <SidebarLink icon={Settings} label="Settings" href="/settings" />

@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredResults, setFilteredResults] = useState(null);
   const {
     data: searchResults,
     isLoading,
@@ -20,10 +21,22 @@ const Search = () => {
 
   const handleSearch = debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(event.target.value);
+      const value = event.target.value.trim();
+      setSearchTerm(value);
+      if (value === "") {
+        setFilteredResults(null);
+      }
     },
     500,
   );
+
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredResults(null);
+    } else {
+      setFilteredResults(searchResults);
+    }
+  }, [searchResults, searchTerm]);
 
   useEffect(() => {
     return handleSearch.cancel;
@@ -40,29 +53,34 @@ const Search = () => {
           onChange={handleSearch}
         />
       </div>
+      {searchTerm === "" && (
+      <div className="flex flex-col text-gray-500">
+        <p className="text-lg font-medium mt-3">Start typing to find what you're looking for...</p>
+      </div>
+    )}
       <div className="p-5">
         {isLoading && <p>Loading...</p>}
         {isError && <p>Error occurred while fetching search results.</p>}
-        {!isLoading && !isError && searchResults && (
+        {!isLoading && !isError && filteredResults && (
           <div>
-            {searchResults.tasks && searchResults.tasks?.length > 0 && (
+            {filteredResults.tasks && filteredResults.tasks?.length > 0 && (
               <h2>Tasks</h2>
             )}
-            {searchResults.tasks?.map((task) => (
+            {filteredResults.tasks?.map((task) => (
               <TaskCard key={task.id} task={task} />
             ))}
 
-            {searchResults.projects && searchResults.projects?.length > 0 && (
+            {filteredResults.projects && filteredResults.projects?.length > 0 && (
               <h2>Projects</h2>
             )}
-            {searchResults.projects?.map((project) => (
+            {filteredResults.projects?.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
 
-            {searchResults.users && searchResults.users?.length > 0 && (
+            {filteredResults.users && filteredResults.users?.length > 0 && (
               <h2>Users</h2>
             )}
-            {searchResults.users?.map((user) => (
+            {filteredResults.users?.map((user) => (
               <UserCard key={user.userId} user={user} />
             ))}
           </div>
