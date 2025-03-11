@@ -25,6 +25,7 @@ const HomePage = () => {
   } = useGetTasksQuery({ projectId: parseInt("1") });
   const { data: projects, isLoading: isProjectsLoading } =
     useGetProjectsQuery();
+    console.log("projects", projects);
 
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
 

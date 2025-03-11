@@ -137,7 +137,7 @@ export const api = createApi({
       query: () => "team",
       providesTags: ["Teams"]
     }),
-    search: builder.query<SearchResult[], string>({
+    search: builder.query<SearchResult, string>({
       query: (query) => `search?query=${query}`
     })
   }),
