@@ -55,7 +55,7 @@ const Search = () => {
       </div>
       {searchTerm === "" && (
       <div className="flex flex-col text-gray-500">
-        <p className="text-lg font-medium mt-3">Start typing to find what you're looking for...</p>
+        <p className="text-lg font-medium mt-3">Start typing to find what you&apos;re looking for...</p>
       </div>
     )}
       <div className="p-5">
