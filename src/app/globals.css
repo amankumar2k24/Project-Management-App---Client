@@ -9,6 +9,7 @@
 }
 
 @layer base {
+
   html,
   body,
   #root,
@@ -19,4 +20,12 @@
     @apply bg-white;
     @apply dark:bg-black;
   }
+}
+
+.auth-background {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right top, #a9cfeae2, #c3a8ec, #eecf9b);
 }
