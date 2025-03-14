@@ -22,3 +22,10 @@
   }
 }
 
+.auth-background {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right top, #a9cfeae2, #c3a8ec, #eecf9b);
+}
