@@ -5,7 +5,8 @@ import {AlertCircle,AlertOctagon,AlertTriangle,Briefcase,ChevronDown,ChevronUp,H
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const Sidebar = () => {
   const [showProjects, setShowProjects] = useState(true);
@@ -18,18 +19,34 @@ const Sidebar = () => {
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed,
   );
+  
+useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth <= 400) {
+      dispatch(setIsSidebarCollapsed(true)); 
+    }
+  };
+  handleResize();
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, [dispatch]);
 
-  const sidebarClassNames = `fixed flex flex-col h-[100%] justify-between shadow-xl
-    transition-all duration-300 h-full z-40 dark:bg-black overflow-y-auto bg-white ${isSidebarCollapsed ? "w-0 hidden" : "w-64"}
-  `;
 
   return (
-    <div className={sidebarClassNames}>
-      <div className="flex h-[100%] w-full flex-col justify-start overflow-x-hidden">
+    <motion.div
+    initial={{ width: isSidebarCollapsed ? 0 : 225 }}
+    animate={{ width: isSidebarCollapsed ? 0 : 225 }}
+    exit={{ width: 0 }}
+    transition={{ duration: 0.3, ease: "easeInOut" }}
+    className={`fixed flex flex-col h-full justify-between shadow-xl z-40 dark:bg-black overflow-y-auto bg-white ${
+      isSidebarCollapsed ? "hidden" : "block"
+    }`}
+  >
+      <div className="flex h-[100%] transition-all duration-300 ease-in-out w-full flex-col justify-start overflow-x-hidden">
         {/* TOP LOGO */}
         <div className="z-50 flex min-h-[56px] w-64 items-center justify-between bg-white px-6 pt-3 dark:bg-black">
           <div className="text-xl font-bold text-gray-800 dark:text-white">
-            EDLIST
+          EnvisionPro  
           </div>
           {isSidebarCollapsed ? null : (
             <button
@@ -50,7 +67,7 @@ const Sidebar = () => {
            alt="Logo" width={40} height={40} />
           <div>
             <h3 className="text-md font-bold tracking-wide dark:text-gray-200">
-              EDROH TEAM
+              AMAN TEAM
             </h3>
             <div className="mt-1 flex items-start gap-2">
               <LockIcon className="mt-[0.1rem] h-3 w-3 text-gray-500 dark:text-gray-400" />
@@ -59,6 +76,7 @@ const Sidebar = () => {
           </div>
         </div>
         {/* NAVBAR LINKS  */}
+
         <nav className="z-10 w-full">
           <SidebarLink icon={Home} label="Home" href="/home" />
           <SidebarLink icon={Briefcase} label="Timeline" href="/timeline" />
@@ -128,7 +146,7 @@ const Sidebar = () => {
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -140,11 +158,12 @@ interface SidebarLinkProps {
 
 export const SidebarLink = ({ href, icon: Icon, label }: SidebarLinkProps) => {
   const pathname = usePathname();
+  const dispatch = useAppDispatch()
   const isActive =
     pathname === href || (pathname === "/" && href === "/dashboard");
 
   return (
-    <Link href={href} className="w-full">
+    <Link href={href} className="w-full" onClick={() => dispatch(setIsSidebarCollapsed(true))}>
       <div
         className={`relative flex cursor-pointer items-center gap-3 transition-colors hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-700 ${
           isActive ? "bg-gray-100 text-white dark:bg-gray-600" : ""
