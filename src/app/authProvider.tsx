@@ -45,19 +45,17 @@ import { Box } from "@mui/material";
 
   const AuthProvider = ({ children }: {children : React.ReactNode}) => {
     return (
-      <Box className="auth-background">
         <Authenticator formFields={formFields}>
-          {({ user }) =>
-            user ? (
-              <div>{children}</div>
-            ) : (
-              <div>
-                <h1>Please sign in below:</h1>
-              </div>
-            )
-          }
+       {({ user }) =>
+        user ? (
+          <>{children}</> 
+        ) : (
+          <Box className="auth-background">
+            <h1>Please sign in below:</h1>
+          </Box>
+        )
+      }
         </Authenticator>
-      </Box>
     );
   };
 
