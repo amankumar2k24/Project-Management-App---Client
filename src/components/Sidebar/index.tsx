@@ -24,6 +24,8 @@ useEffect(() => {
   const handleResize = () => {
     if (window.innerWidth <= 400) {
       dispatch(setIsSidebarCollapsed(true)); 
+    }else{
+      dispatch(setIsSidebarCollapsed(false));
     }
   };
   handleResize();
