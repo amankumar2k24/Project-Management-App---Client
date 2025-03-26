@@ -41,7 +41,7 @@ useEffect(() => {
     exit={{ width: 0 }}
     transition={{ duration: 0.3, ease: "easeInOut" }}
     className={`fixed flex flex-col h-full justify-between shadow-xl z-40 dark:bg-black overflow-y-auto bg-white ${
-      isSidebarCollapsed ? "hidden" : "block"
+      isSidebarCollapsed ? "hidden sm:block" : "block"
     }`}
   >
       <div className="flex h-[100%] transition-all duration-300 ease-in-out w-full flex-col justify-start overflow-x-hidden">
@@ -164,8 +164,14 @@ export const SidebarLink = ({ href, icon: Icon, label }: SidebarLinkProps) => {
   const isActive =
     pathname === href || (pathname === "/" && href === "/dashboard");
 
+  const sidebarCollapsed =()=>{
+    if(window.innerWidth <= 400){
+      dispatch(setIsSidebarCollapsed(true))
+    }
+  }
+
   return (
-    <Link href={href} className="w-full" onClick={() => dispatch(setIsSidebarCollapsed(true))}>
+    <Link href={href} className="w-full" onClick={()=>sidebarCollapsed()}>
       <div
         className={`relative flex cursor-pointer items-center gap-3 transition-colors hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-700 ${
           isActive ? "bg-gray-100 text-white dark:bg-gray-600" : ""
