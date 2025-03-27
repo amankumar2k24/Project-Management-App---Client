@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import TaskCard from "@/components/TaskCard";
 import { Task, useGetTasksQuery } from "@/state/api";
 import React from "react";
+import { SyncLoader } from "react-spinners";
+
 
 type Props = {
   id: string;
@@ -15,7 +17,16 @@ const ListView = ({ id, setIsModalNewTaskOpen }: Props) => {
     isLoading,
   } = useGetTasksQuery({ projectId: Number(id) });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: "100vh" }}
+      >
+        <SyncLoader size={18} color="#8A33FD" />
+      </div>
+    );
+  }
   if (error) return <div>An error occurred while fetching tasks</div>;
 
   return (

@@ -3,6 +3,8 @@ import { useGetTasksQuery } from "@/state/api";
 import { DisplayOption, Gantt, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import React, { useMemo, useState } from "react";
+import { SyncLoader } from "react-spinners";
+
 
 type Props = {
   id: string;
@@ -47,7 +49,17 @@ const Timeline = ({ id, setIsModalNewTaskOpen }: Props) => {
     }));
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: "100vh" }}
+      >
+        <SyncLoader size={18} color="#8A33FD" />
+      </div>
+    );
+  }
+  
   if (error || !tasks) return <div>An error occurred while fetching tasks</div>;
 
   return (

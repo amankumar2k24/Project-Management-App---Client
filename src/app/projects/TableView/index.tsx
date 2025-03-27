@@ -4,6 +4,8 @@ import { dataGridClassNames, dataGridSxStyles } from "@/lib/utils";
 import { useGetTasksQuery } from "@/state/api";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React from "react";
+import { SyncLoader } from "react-spinners";
+
 
 type Props = {
   id: string;
@@ -73,7 +75,16 @@ const TableView = ({ id, setIsModalNewTaskOpen }: Props) => {
     isLoading,
   } = useGetTasksQuery({ projectId: Number(id) });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: "100vh" }}
+      >
+        <SyncLoader size={18} color="#8A33FD" />
+      </div>
+    );
+  }
   if (error || !tasks) return <div>An error occurred while fetching tasks</div>;
 
   return (

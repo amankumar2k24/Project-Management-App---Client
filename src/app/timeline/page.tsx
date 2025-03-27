@@ -6,6 +6,8 @@ import { useGetProjectsQuery } from "@/state/api";
 import { DisplayOption, Gantt, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import React, { useMemo, useState } from "react";
+import { SyncLoader } from "react-spinners";
+
 
 type TaskTypeItems = "task" | "milestone" | "project";
 
@@ -40,8 +42,16 @@ const Timeline = () => {
       viewMode: event.target.value as ViewMode,
     }));
   };
-
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: "100vh" }}
+      >
+        <SyncLoader size={18} color="#8A33FD" />
+      </div>
+    );
+  } 
   if (isError || !projects)
     return <div>An error occurred while fetching projects</div>;
 

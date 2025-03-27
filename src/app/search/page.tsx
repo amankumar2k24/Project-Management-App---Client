@@ -7,6 +7,8 @@ import UserCard from "@/components/UserCard";
 import { SearchResult, useSearchQuery } from "@/state/api";
 import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
+import { SyncLoader } from "react-spinners";
+
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -59,7 +61,14 @@ const Search = () => {
       </div>
     )}
       <div className="p-5">
-        {isLoading && <p>Loading...</p>}
+        {isLoading && (
+            <div
+            className="flex items-center justify-center w-full"
+            style={{ height: "100vh" }}
+          >
+            <SyncLoader size={18} color="#8A33FD" />
+          </div>
+        )}
         {isError && <p>Error occurred while fetching search results.</p>}
         {!isLoading && !isError && filteredResults && (
           <div>

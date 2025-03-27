@@ -5,6 +5,7 @@ import { Task as TaskType, useGetTasksQuery, useUpdateTaskStatusMutation } from 
 import { EllipsisVertical, MessageSquareMore, Plus } from "lucide-react";
 import { format } from "date-fns";
 import Image from "next/image";
+import { SyncLoader } from "react-spinners";
 
 type BoardProps = {
   id: string;
@@ -25,7 +26,16 @@ const BoardView = ({ id, setIsModalNewTaskOpen }: BoardProps) => {
     updateTaskStatus({ taskId, status: toStatus });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: "100vh" }}
+      >
+        <SyncLoader size={18} color="#8A33FD" />
+      </div>
+    );
+  }
   if (error) return <div>An error occurred while fetching tasks</div>;
 
   return (

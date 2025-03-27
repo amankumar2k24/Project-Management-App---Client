@@ -3,6 +3,8 @@ import { useGetUsersQuery } from "@/state/api";
 import React from "react";
 import { useAppSelector } from "../redux";
 import Header from "@/components/Header";
+import { SyncLoader } from "react-spinners";
+
 import {
   DataGrid,
   GridColDef,
@@ -48,7 +50,16 @@ const Users = () => {
   const { data: users, isLoading, isError } = useGetUsersQuery();
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: "100vh" }}
+      >
+        <SyncLoader size={18} color="#8A33FD" />
+      </div>
+    );
+  } 
   if (isError || !users) return <div>Error fetching users</div>;
 
   return (

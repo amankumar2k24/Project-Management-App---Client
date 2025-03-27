@@ -7,6 +7,8 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Header from "@/components/Header";
 import {Bar,BarChart,CartesianGrid,Cell,Legend,Pie,PieChart,ResponsiveContainer,Tooltip,XAxis,YAxis,} from "recharts";
 import { dataGridClassNames, dataGridSxStyles } from "@/lib/utils";
+import { SyncLoader } from "react-spinners";
+
 
 const taskColumns: GridColDef[] = [
   { field: "title", headerName: "Title", width: 200 },
@@ -29,7 +31,13 @@ const HomePage = () => {
 
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
 
-  if (tasksLoading || isProjectsLoading) return <div>Loading..</div>;
+  if (tasksLoading || isProjectsLoading) {
+    return (
+      <div className="flex items-center justify-center w-full" style={{ height: "100vh" }}>
+       <SyncLoader size={18} color="#8A33FD" />
+      </div>
+    )
+  }
   if (tasksError || !tasks || !projects) return <div>Error fetching data</div>;
 
   const priorityCount = tasks.reduce(
